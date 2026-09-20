@@ -1,4 +1,3 @@
-import time
 
 productdb = [
     ('001', '0001043321', 'Potato', 1.99, 'per kg', 120.0, 'vegetable'),
@@ -52,49 +51,3 @@ productdb = [
     ('049', '0002784980', 'Popcorn', 1.89, 'per single item', 110.0, 'salty snacks'),
     ('050', '0008412411', 'Corn Chips', 2.49, 'per single item', 95.0, 'salty snacks')
 ]
-
-print("===========================")
-print("welcome To the cash register sim")
-print("===========================")
-
-print("loading...")
-time.sleep(1)
-
-def find_product(code):
-    for p in productdb:
-        if code in (p[0], p[1]):
-            return p
-    return None
-
-cart = []
-
-priceofcart = 0
-itemsincart = 0
-
-
-print(' 1-enter a product by code \n 2-check recipt \n 3-remove item from recipt')
-
-usermenu = input(":")
-
-
-if usermenu == "1":
-    productcode = input("Enter product code: ")
-    product = find_product(productcode)
-    if product is None:
-        print("Product not found")
-    else:
-        print("Found:", product[2], product[3], product[4])
-        if product[4] == 'per kg':
-            grams = float(input("Weight in g: "))
-            amount = grams / 1000
-        else:
-            amount = int(input("Quantity: "))
-        cart.append((product[2], amount, product[3] * amount))
-
-
-for item in cart:
-    print("===========================")
-    print("Cart")
-    print("===========================")
-
-    print("product:" ,item[0], "amount:" ,item[1], \n ,"price:" ,item[2])
