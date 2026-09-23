@@ -1,4 +1,6 @@
 import time
+import os
+from sys import platform
 
 productdb = [
     ('001', '0001043321', 'Potato', 1.99, 'per kg', 120.0, 'vegetable'),
@@ -71,30 +73,72 @@ cart = []
 priceofcart = 0
 itemsincart = 0
 
+while True:
+    #time.sleep(1.5)
+    #if platform == "win32":
+        #os.system('cls')
+    #else:
+        #os.system('clear')
+    print(' 1-enter a product by code \n 2-check recipt \n 3-edit item from recipt')
 
-print(' 1-enter a product by code \n 2-check recipt \n 3-remove item from recipt')
-
-usermenu = input(":")
+    usermenu = input(":")
 
 
-if usermenu == "1":
-    productcode = input("Enter product code: ")
-    product = find_product(productcode)
-    if product is None:
-        print("Product not found")
-    else:
-        print("Found:", product[2], product[3], product[4])
-        if product[4] == 'per kg':
-            grams = float(input("Weight in g: "))
-            amount = grams / 1000
+    if usermenu == "1":
+        productcode = input("Enter product code: ")
+        product = find_product(productcode)
+        if product is None:
+            print("Product not found")
         else:
-            amount = int(input("Quantity: "))
-        cart.append((product[2], amount, product[3] * amount))
+            print("Found:", product[2],"$",product[3], product[4])
+            if product[4] == 'per kg':
+                grams = float(input("Weight in g: "))
+                amount = grams / 1000
+            else:
+                amount = int(input("Quantity: "))
+            cart.append((product[2], amount, product[3] * amount, product[4]))
 
 
-for item in cart:
-    print("===========================")
-    print("Cart")
-    print("===========================")
 
-    print("product:" ,item[0], "amount:" ,item[1], \n ,"price:" ,item[2])
+
+    if usermenu == "2":
+        cartchecker = ('n')
+        while True:
+            print("===========================")
+            print("Cart")
+            print("===========================")
+            total = 0
+            for item in cart:
+                print("product:" ,item[0],"\namount:" ,item[1],"\nprice:" ,item[2])
+                print("===========================")
+                total += item[2]
+            rounded_total = round(total, 2)
+            print("Total amount:", rounded_total)
+            cartchecker = input("back to menu?(y/n): ")
+            if cartchecker == 'y':
+                break
+
+    if usermenu == "3":
+        for index, item in enumerate(cart):
+            print(index + 1, "product:", item[0], "amount:", item[1], "price:", item[2])
+
+        editchoice = int(input("choose product: ")) - 1
+        amountchoice = float(input("choose amount: "))
+
+        cart[editchoice] = list(cart[editchoice])
+        old_amount = cart[editchoice][1]
+        old_price = cart[editchoice][2]
+
+        price_per_unit = old_price / old_amount
+        new_price = amountchoice * price_per_unit
+
+        cart[editchoice][1] = amountchoice
+        cart[editchoice][2] = new_price
+
+        continuechoice = input("next item? ")
+        if continuechoice == 'n':
+            break
+
+
+
+
